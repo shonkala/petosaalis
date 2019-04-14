@@ -1,27 +1,19 @@
 'use strict'
 
-let o = {
-  width: 100,
-
-  height: 40
-};
-
-let d = new ROT.Display(o);
-
-document.body.appendChild(d.getContainer());
-
-for (let i = 0; i < o.width; i++) {
-  for (let j = 0; j < o.height; j++) {
-    if (!i || !j || i + 1 == o.width || j + 1 == o.height) {
-      d.draw(i, j, "#", "gray");
-    } else {
-      d.draw(i, j, ".", "#666");
-    }
+class World {
+  constructor(w, h) {
+    this.width = w
+    this.height = h
+    this.time = 0
+    this.creatures = []
+  }
+  progress() {
+    this.time++
+  }
+  addCreature(creature) {
+    this.creatures.push(creature)
   }
 }
-
-d.draw(o.width >> 1, o.height >> 1, "@", "goldenrod");
-
 
 class Creature {
   constructor() {
