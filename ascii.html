@@ -13,8 +13,10 @@
     <script src="./sim.js"></script>
     <script src="./view.js"></script>
     <script type="text/javascript">
-      let world = new World(60, 40)
+      let crits = [new Creature(10, 10, 'cow'), new Creature(10, 13, 'grass')]
+      let world = new World(60, 40, crits)
       let view = new View(world)
+      view.drawCreatures(crits)
     </script>
   </body>
 </html>
