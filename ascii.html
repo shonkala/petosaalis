@@ -4,11 +4,17 @@
     <meta charset="utf-8" />
     <script src="./rot.min.js"></script>
     <script src="./animascii.min.js"></script>
+
     <title></title>
   </head>
-  <body>
+  <body style="background-color:black;">
     <div id="container1"></div>
 
     <script src="./sim.js"></script>
+    <script src="./view.js"></script>
+    <script type="text/javascript">
+      let world = new World(60, 40)
+      let view = new View(world)
+    </script>
   </body>
 </html>
