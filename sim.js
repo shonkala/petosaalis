@@ -1,11 +1,11 @@
 'use strict'
 
 class World {
-  constructor(w, h) {
+  constructor(w, h, creatures) {
     this.width = w
     this.height = h
     this.time = 0
-    this.creatures = []
+    this.creatures = (creatures ? creatures : [])
   }
   progress() {
     this.time++
@@ -16,7 +16,10 @@ class World {
 }
 
 class Creature {
-  constructor() {
+  constructor(x, y, type) {
+    this.x = x
+    this.y = y
+    this.type = type
     this.hunger = true;
   }
   eat() {this.hunger = false};
