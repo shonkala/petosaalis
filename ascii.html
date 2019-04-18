@@ -12,11 +12,13 @@
 
     <script src="./sim.js"></script>
     <script src="./view.js"></script>
+    <script src="./control.js"></script>
     <script type="text/javascript">
-      let crits = [new Creature(10, 10, 'cow'), new Creature(10, 13, 'grass')]
-      let world = new World(60, 40, crits)
-      let view = new View(world)
-      view.drawCreatures(crits)
+      const XLIM = 60;
+      const YLIM = 40;
+      const CLIM = 2000;
+      let control = new Controller();
+      control.runAnimation();
     </script>
   </body>
 </html>
