@@ -11,20 +11,22 @@ const colorStyles = {
 
 class View {
   constructor(world) {
-    let o = {
+    this.o = {
       width: world.width,
       height: world.height,
       forceSquareRatio: true
     };
 
-    this.display = new ROT.Display(o);
+    this.display = new ROT.Display(this.o);
 
     document.body.appendChild(this.display.getContainer());
+    this.drawBackground();
+  }
 
-    // Draw the background
-    for (let i = 0; i < o.width; i++) {
-      for (let j = 0; j < o.height; j++) {
-        if (!i || !j || i + 1 == o.width || j + 1 == o.height) {
+  drawBackground() {
+    for (let i = 0; i < this.o.width; i++) {
+      for (let j = 0; j < this.o.height; j++) {
+        if (!i || !j || i + 1 == this.o.width || j + 1 == this.o.height) {
           this.display.draw(i, j, "~", "steelblue");
         } else {
           this.display.draw(i, j, ".", "#666");
