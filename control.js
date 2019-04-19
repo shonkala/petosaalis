@@ -2,9 +2,16 @@
 
 class Controller {
   constructor() {
-    this.crits = this._createCrits(10, 10);
-    this.world = new World(XLIM, YLIM, this.crits);
+    let crits = this._createCrits(10, 10);
+    this.world = new World(XLIM, YLIM, crits);
     this.view = new View(this.world);
+  }
+
+  runAnimation() {
+    let timerId = setTimeout(function tick() {
+      control._update();
+      timerId = setTimeout(tick, TICK_MS);
+    }, TICK_MS);
   }
 
   _createCrits(plants, animals) {
@@ -16,18 +23,13 @@ class Controller {
     return crits;
   }
 
-  runAnimation() {
-    this.view.drawCreatures(this.crits);
-    let timerId = setTimeout(function tick() {
-      control._update();
-      timerId = setTimeout(tick, 1000);
-    }, 1000);
-  }
-
   _update() {
     this.world.updateState();
     this.view.drawBackground();
-    this.view.drawCreatures(this.crits);
+    this.view.drawCreatures(this.world.creatures);
+    console.log(
+      `Creatures: ${this.world.creatures.length}, Time: ${this.world.time}`
+    );
   }
 }
 
