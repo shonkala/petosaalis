@@ -7,13 +7,9 @@ class World {
     this.time = 0;
     this.creatures = creatures ? creatures : [];
   }
-  progress() {
-    this.time++;
-  }
-  addCreature(creature) {
-    this.creatures.push(creature);
-  }
+
   updateState() {
+    this.progress();
     this.creatures.forEach(creature => {
       creature.move();
       if (
@@ -24,11 +20,34 @@ class World {
         let { x, y } = randomWalk();
         let newx = creature.x + x;
         let newy = creature.y + y;
-        let child = new Plant(newx, newy, creature.type);
-        this.addCreature(child);
+        let pos = checkLimits(newx, newy);
+        newx = pos.x;
+        newy = pos.y;
+        let result = this.creatures.find(c => {
+          if (c instanceof Plant && c.x == newx && c.y == newy) return true;
+        });
+        if (!result) {
+          let child = new Plant(newx, newy, creature.type);
+          this.addCreature(child);
+        }
+      }
+      if (creature instanceof Animal && creature.hunger == true) {
+        this.creatures.forEach((c, index, array) => {
+          if (c instanceof Plant && c.x == creature.x && c.y == creature.y)
+            array.splice(index, 1);
+        });
+        creature.eat();
       }
     });
   }
+
+  progress() {
+    this.time++;
+  }
+  addCreature(creature) {
+    this.creatures.push(creature);
+  }
+  killCreature(creature) {}
 }
 
 class Creature {
@@ -65,12 +84,11 @@ class Animal extends Creature {
     this.age += 1;
     this.lastAte += 1;
     let { x, y } = randomWalk();
-    this.x += x;
-    this.y += y;
-    if (this.x == 0) this.x = 1;
-    if (this.x >= XLIM - 1) this.x = XLIM - 2;
-    if (this.y == 0) this.y = 1;
-    if (this.y >= YLIM - 1) this.y = YLIM - 2;
+    x = this.x + x;
+    y = this.y + y;
+    let pos = checkLimits(x, y);
+    this.x = pos.x;
+    this.y = pos.y;
   }
   eat() {}
 }
@@ -83,5 +101,13 @@ function randomWalk() {
   else if (rand < 0.5) x = 1;
   else if (rand < 0.75) y = -1;
   else y = 1;
+  return { x, y };
+}
+
+function checkLimits(x, y) {
+  if (x == 0) x = 1;
+  if (x >= XLIM - 1) x = XLIM - 2;
+  if (y == 0) y = 1;
+  if (y >= YLIM - 1) y = YLIM - 2;
   return { x, y };
 }
