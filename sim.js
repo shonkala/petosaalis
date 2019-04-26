@@ -6,108 +6,58 @@ class World {
     this.height = h;
     this.time = 0;
     this.creatures = creatures ? creatures : [];
+    this.creatureTypes = new Set();
+    this.creatures.forEach(c => this.creatureTypes.add(c.type));
+    this.population = {};
   }
 
   updateState() {
-    this.progress();
-    this.creatures.forEach(creature => {
-      creature.move();
-      if (
-        creature instanceof Plant &&
-        creature.grow() &&
-        this.creatures.length < CLIM
-      ) {
-        let { x, y } = randomWalk();
-        let newx = creature.x + x;
-        let newy = creature.y + y;
-        let pos = checkLimits(newx, newy);
-        newx = pos.x;
-        newy = pos.y;
-        let result = this.creatures.find(c => {
-          if (c instanceof Plant && c.x == newx && c.y == newy) return true;
-        });
-        if (!result) {
-          let child = new Plant(newx, newy, creature.type);
-          this.addCreature(child);
+    this.progressTime();
+    this.population = this.countPopulation();
+    this.creatures.forEach((creature, index, array) => {
+      if (creature.alive == false) this.killCreature(index);
+      else {
+        creature.move();
+        if (creature.grow() && this.creatures.length < CLIM) {
+          let pos = randomWalk(creature.x, creature.y);
+          let newx = pos.x;
+          let newy = pos.y;
+          let result = this.creatures.find(c => {
+            return c.type == creature.type && c.x == newx && c.y == newy;
+          });
+          if (!result)
+            this.addCreature(creature.child(newx, newy, creature.type));
         }
-      }
-      if (creature instanceof Animal && creature.hunger == true) {
-        this.creatures.forEach((c, index, array) => {
-          if (c instanceof Plant && c.x == creature.x && c.y == creature.y)
-            array.splice(index, 1);
-        });
-        creature.eat();
+        if (creature instanceof Animal) {
+          this.creatures.forEach((c, index, array) => {
+            if (c instanceof Plant && c.x == creature.x && c.y == creature.y) {
+              this.killCreature(index);
+              creature.eat();
+            }
+          });
+        }
       }
     });
   }
 
-  progress() {
+  progressTime() {
     this.time++;
   }
   addCreature(creature) {
     this.creatures.push(creature);
   }
-  killCreature(creature) {}
-}
-
-class Creature {
-  constructor(x, y, type) {
-    this.x = x;
-    this.y = y;
-    this.type = type;
-    this.hunger = true;
-    this.age = 0;
-    this.lastAte = 0;
+  killCreature(index) {
+    this.creatures.splice(index, 1);
   }
-  eat() {
-    this.hunger = false;
-    this.lastAte = 0;
-  }
-  grow() {
-    return false;
-  }
-}
-
-class Plant extends Creature {
-  move() {
-    this.age += 1;
-  }
-  grow() {
-    if (this.age % 5 == 0) {
-      return true;
+  countPopulation() {
+    let population = {};
+    for (let type of this.creatureTypes.keys()) {
+      population[type] = 0;
     }
+    population = this.creatures.reduce((population, c) => {
+      population[c.type] += 1;
+      return population;
+    }, population);
+    return population;
   }
-}
-
-class Animal extends Creature {
-  move() {
-    this.age += 1;
-    this.lastAte += 1;
-    let { x, y } = randomWalk();
-    x = this.x + x;
-    y = this.y + y;
-    let pos = checkLimits(x, y);
-    this.x = pos.x;
-    this.y = pos.y;
-  }
-  eat() {}
-}
-
-function randomWalk() {
-  let rand = Math.random();
-  let x = 0,
-    y = 0;
-  if (rand < 0.25) x = -1;
-  else if (rand < 0.5) x = 1;
-  else if (rand < 0.75) y = -1;
-  else y = 1;
-  return { x, y };
-}
-
-function checkLimits(x, y) {
-  if (x == 0) x = 1;
-  if (x >= XLIM - 1) x = XLIM - 2;
-  if (y == 0) y = 1;
-  if (y >= YLIM - 1) y = YLIM - 2;
-  return { x, y };
 }
