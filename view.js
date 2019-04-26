@@ -45,4 +45,13 @@ class View {
       );
     });
   }
+
+  showPopulation(population) {
+    while (stats_list.firstChild) stats_list.firstChild.remove();
+    for (let type in population) {
+      let li = document.createElement("li");
+      li.appendChild(document.createTextNode(`${type}: ${population[type]}`));
+      stats_list.appendChild(li);
+    }
+  }
 }

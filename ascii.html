@@ -4,19 +4,31 @@
     <meta charset="utf-8" />
     <script src="./rot.min.js"></script>
     <script src="./animascii.min.js"></script>
-
     <title></title>
+    <style media="screen">
+      .stats {
+        font-family: monospace;
+        color: silver;
+        background-color: black;
+      }
+    </style>
   </head>
   <body style="background-color:black;">
     <div id="container1"></div>
-
+    <div id="stats" class="stats">
+      <p>Population:</p>
+      <ul id="stats_list">
+        <li></li>
+      </ul>
+    </div>
+    <script src="./creature.js"></script>
     <script src="./sim.js"></script>
     <script src="./view.js"></script>
     <script src="./control.js"></script>
     <script type="text/javascript">
       const XLIM = 60;
       const YLIM = 40;
-      const CLIM = 2400;
+      const CLIM = 5000;
       const TICK_MS = 200;
       let control = new Controller();
       control.runAnimation();

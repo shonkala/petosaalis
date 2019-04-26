@@ -27,9 +27,7 @@ class Controller {
     this.world.updateState();
     this.view.drawBackground();
     this.view.drawCreatures(this.world.creatures);
-    console.log(
-      `Creatures: ${this.world.creatures.length}, Time: ${this.world.time}`
-    );
+    this.view.showPopulation(this.world.population);
   }
 }
 
