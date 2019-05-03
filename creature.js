@@ -36,21 +36,31 @@ class Plant extends Creature {
 }
 
 class Animal extends Creature {
+  constructor(x, y, type, options) {
+    super(x, y, type);
+    this.options = options;
+    this.food = options.food;
+    this.maxAge = options.maxAge;
+    this.maxHunger = options.maxHunger;
+    this.breedAge = options.breedAge;
+  }
+
   move() {
     this.age += 1;
     this.lastAte += 1;
-    if (this.age > 500 || this.lastAte > 50) this.alive = false;
+    if (this.age > this.maxAge || this.lastAte > this.maxHunger)
+      this.alive = false;
     let pos = randomWalk(this.x, this.y);
     this.x = pos.x;
     this.y = pos.y;
   }
   grow() {
-    if (this.age % 75 == 0) {
+    if (this.age % this.breedAge == 0) {
       return true;
     }
   }
   child(x, y) {
-    let child = new Animal(x, y, this.type);
+    let child = new Animal(x, y, this.type, this.options);
     return child;
   }
 }

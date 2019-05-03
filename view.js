@@ -2,11 +2,13 @@
 
 const charStyles = {
   cow: "C",
-  grass: "v"
+  grass: "v",
+  tiger: "T"
 };
 const colorStyles = {
   cow: "sandybrown",
-  grass: "springgreen"
+  grass: "springgreen",
+  tiger: "yellow"
 };
 
 class View {
@@ -19,7 +21,7 @@ class View {
 
     this.display = new ROT.Display(this.o);
 
-    document.body.appendChild(this.display.getContainer());
+    container1.appendChild(this.display.getContainer());
     this.drawBackground();
   }
 
@@ -51,6 +53,7 @@ class View {
     for (let type in population) {
       let li = document.createElement("li");
       li.appendChild(document.createTextNode(`${type}: ${population[type]}`));
+      li.style.color = colorStyles[type];
       stats_list.appendChild(li);
     }
   }

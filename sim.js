@@ -29,12 +29,35 @@ class World {
             this.addCreature(creature.child(newx, newy, creature.type));
         }
         if (creature instanceof Animal) {
-          this.creatures.forEach((c, index, array) => {
-            if (c instanceof Plant && c.x == creature.x && c.y == creature.y) {
-              this.killCreature(index);
-              creature.eat();
-            }
-          });
+          switch (creature.type) {
+            case "cow":
+              this.creatures.forEach((c, index, array) => {
+                if (
+                  c.type == creature.food &&
+                  c.x == creature.x &&
+                  c.y == creature.y
+                ) {
+                  this.killCreature(index);
+                  creature.eat();
+                }
+              });
+              break;
+            case "tiger":
+              this.creatures.forEach((c, index, array) => {
+                if (
+                  creature.lastAte > 10 &&
+                  c.type == creature.food &&
+                  c.x >= creature.x - 1 &&
+                  c.x <= creature.x + 1 &&
+                  c.y >= creature.y - 1 &&
+                  c.y <= creature.y + 1
+                ) {
+                  this.killCreature(index);
+                  creature.eat();
+                }
+              });
+              break;
+          }
         }
       }
     });
