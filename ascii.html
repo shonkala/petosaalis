@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <script src="./rot.min.js"></script>
-    <script src="./animascii.min.js"></script>
     <title></title>
     <style media="screen">
       .stats {
@@ -14,12 +13,13 @@
     </style>
   </head>
   <body style="background-color:black;">
+    <button type="button" style="border-radius: 10px" name="button">
+      Start!
+    </button>
     <div id="container1"></div>
     <div id="stats" class="stats">
       <p>Population:</p>
-      <ul id="stats_list">
-        <li></li>
-      </ul>
+      <ul id="stats_list"></ul>
     </div>
     <script src="./creature.js"></script>
     <script src="./sim.js"></script>
@@ -30,8 +30,15 @@
       const YLIM = 40;
       const CLIM = 5000;
       const TICK_MS = 200;
-      let control = new Controller();
-      control.runAnimation();
+      let control;
+      let button = document.getElementsByName("button")[0];
+      button.addEventListener("click", start);
+
+      function start() {
+        control = new Controller();
+        control.runAnimation();
+        this.hidden = true;
+      }
     </script>
   </body>
 </html>
