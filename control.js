@@ -23,8 +23,8 @@ class Controller {
         new Animal(randomInt(1, XLIM), randomInt(1, YLIM), "cow", {
           food: "grass",
           maxAge: 500,
-          maxHunger: 50,
-          breedAge: 75
+          maxHunger: 75,
+          breedAge: 80
         })
       );
     for (let i = 0; i < predators; i++)
@@ -43,7 +43,12 @@ class Controller {
   _update() {
     this.world.updateState();
     this.view.drawBackground();
-    this.view.drawCreatures(this.world.creatures);
+    this.view.drawCreatures(
+      this.world.creatures.filter(creature => creature instanceof Plant)
+    );
+    this.view.drawCreatures(
+      this.world.creatures.filter(creature => creature instanceof Animal)
+    );
     this.view.showPopulation(this.world.population);
   }
 }
