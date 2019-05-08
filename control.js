@@ -1,8 +1,8 @@
 "use strict";
 
 class Controller {
-  constructor() {
-    let crits = this._createCrits(15, 20, 5);
+  constructor(plants, cows, tigers) {
+    let crits = this._createCrits(plants, cows, tigers);
     this.world = new World(XLIM, YLIM, crits);
     this.view = new View(this.world);
   }

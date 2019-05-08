@@ -5,22 +5,36 @@
     <script src="./rot.min.js"></script>
     <title></title>
     <style media="screen">
-      .stats {
+      html {
         font-family: monospace;
         color: silver;
         background-color: black;
       }
+      .settings {
+        color: white;
+      }
     </style>
   </head>
-  <body style="background-color:black;">
-    <button type="button" style="border-radius: 10px" name="button">
-      Start!
-    </button>
+  <body>
     <div id="container1"></div>
+    <button type="button" style="" name="button">Click to start!</button>
     <div id="stats" class="stats">
       <p>Population:</p>
       <ul id="stats_list"></ul>
     </div>
+    <div class="settings">
+      <form
+        name="settings"
+        action=""
+        onsubmit="return inputOptions()"
+        method="post"
+      >
+        Plants: <input type="text" name="pnumber" value="10" /> Cows:
+        <input type="text" name="cnumber" value="15" /> Tigers:
+        <input type="text" name="tnumber" value="5" />
+      </form>
+    </div>
+
     <script src="./creature.js"></script>
     <script src="./sim.js"></script>
     <script src="./view.js"></script>
@@ -30,14 +44,24 @@
       const YLIM = 40;
       const CLIM = 5000;
       const TICK_MS = 200;
+      let P = 10;
+      let C = 15;
+      let T = 5;
       let control;
       let button = document.getElementsByName("button")[0];
+      button.addEventListener("click", inputOptions);
       button.addEventListener("click", start);
 
       function start() {
-        control = new Controller();
+        control = new Controller(P, C, T);
         control.runAnimation();
         this.hidden = true;
+        document.forms["settings"].hidden = true;
+      }
+      function inputOptions() {
+        P = document.forms["settings"]["pnumber"].value;
+        C = document.forms["settings"]["cnumber"].value;
+        T = document.forms["settings"]["tnumber"].value;
       }
     </script>
   </body>
