@@ -5,41 +5,67 @@
     <script src="./rot.min.js"></script>
     <title></title>
     <style media="screen">
-      html {
+      * {
         font-family: monospace;
+        font-size: 16px;
         color: silver;
         background-color: black;
+      }
+      button {
+        font-weight: bold;
+        font-size: 20px;
+        color: white;
+        background-color: #404040;
+        padding: 10px;
+        border: 3px solid silver;
+        margin: 10px;
       }
       .settings {
         color: white;
       }
+      .settings input {
+        width: 40px;
+      }
+      .grass {
+        color: springgreen;
+      }
+      .cow {
+        color: sandybrown;
+      }
+      .tiger {
+        color: yellow;
+      }
     </style>
   </head>
   <body>
+    Welcome to the jungle! <br />
+    Rules: <em class="cow">cows</em> eat <em class="grass">grass</em> and
+    <em class="tiger">tigers</em> eat <em class="cow">cows</em>. If animals get
+    food, they will make babies. If not, they die.
     <div id="container1"></div>
-    <button type="button" style="" name="button">Click to start!</button>
+    <button type="button" name="button">Click to start!</button>
     <div id="stats" class="stats">
       <p>Population:</p>
       <ul id="stats_list"></ul>
     </div>
     <div class="settings">
-      <form
-        name="settings"
-        action=""
-        onsubmit="return inputOptions()"
-        method="post"
-      >
-        Plants: <input type="text" name="pnumber" value="10" /> Cows:
-        <input type="text" name="cnumber" value="15" /> Tigers:
-        <input type="text" name="tnumber" value="5" />
+      <form name="settings" action="" method="post">
+        <label class="grass">
+          Grass: <input type="text" name="pnumber" value="10" />
+        </label>
+        <label class="cow">
+          Cows: <input type="text" name="cnumber" value="15" />
+        </label>
+        <label class="tiger">
+          Tigers: <input type="text" name="tnumber" value="5" />
+        </label>
       </form>
     </div>
-
-    <script src="./creature.js"></script>
-    <script src="./sim.js"></script>
-    <script src="./view.js"></script>
-    <script src="./control.js"></script>
-    <script type="text/javascript">
+    <script src="creature.js"></script>
+    <script src="sim.js"></script>
+    <script src="view.js"></script>
+    <script src="control.js"></script>
+    <script>
       const XLIM = 60;
       const YLIM = 40;
       const CLIM = 5000;
@@ -58,6 +84,7 @@
         this.hidden = true;
         document.forms["settings"].hidden = true;
       }
+
       function inputOptions() {
         P = document.forms["settings"]["pnumber"].value;
         C = document.forms["settings"]["cnumber"].value;
