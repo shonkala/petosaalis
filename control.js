@@ -2,8 +2,8 @@
 
 class Controller {
   constructor(plants, cows, tigers) {
-    let crits = this._createCrits(plants, cows, tigers);
-    this.world = new World(XLIM, YLIM, crits);
+    let creatures = this._createCreatures(plants, cows, tigers);
+    this.world = new World(XLIM, YLIM, creatures);
     this.view = new View(this.world);
   }
 
@@ -14,12 +14,14 @@ class Controller {
     }, TICK_MS);
   }
 
-  _createCrits(plants, animals, predators) {
-    let crits = [];
+  _createCreatures(plants, animals, predators) {
+    let creatures = [];
     for (let i = 0; i < plants; i++)
-      crits.push(new Plant(randomInt(1, XLIM), randomInt(1, YLIM), "grass"));
+      creatures.push(
+        new Plant(randomInt(1, XLIM), randomInt(1, YLIM), "grass")
+      );
     for (let i = 0; i < animals; i++)
-      crits.push(
+      creatures.push(
         new Animal(randomInt(1, XLIM), randomInt(1, YLIM), "cow", {
           food: "grass",
           maxAge: 500,
@@ -28,7 +30,7 @@ class Controller {
         })
       );
     for (let i = 0; i < predators; i++)
-      crits.push(
+      creatures.push(
         new Animal(randomInt(1, XLIM), randomInt(1, YLIM), "tiger", {
           food: "cow",
           maxAge: 1000,
@@ -37,7 +39,7 @@ class Controller {
         })
       );
 
-    return crits;
+    return creatures;
   }
 
   _update() {
